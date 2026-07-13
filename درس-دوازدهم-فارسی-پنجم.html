@@ -1295,7 +1295,28 @@
         <div class="splash-logo">📚</div>
         <h1 class="splash-title">کتاب فارسی پایه پنجم</h1>
         <p class="splash-subtitle">درس دوازدهم: باز هم گُل</p>
-        <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-bottom: 20px;">📱 سازگار با موبایل و تبلت</p>
+        <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-bottom: 15px;">📱 سازگار با موبایل و تبلت</p>
+        
+        <!-- Quick Games Preview -->
+        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 15px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.5rem;">🎡</span>
+                <span>چرخ شانس</span>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 15px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.5rem;">🎈</span>
+                <span>بادکنک</span>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 15px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.5rem;">🔍</span>
+                <span>کلمات</span>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 15px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.5rem;">✓✗</span>
+                <span>آزمون</span>
+            </div>
+        </div>
+        
         <div class="splash-author">
             <span>👨‍💻</span>
             <span>تهیه‌کننده: رحیم ارشادی</span>
@@ -1304,7 +1325,6 @@
             <span>🚀</span>
             <span>شروع یادگیری</span>
         </button>
-        <p style="margin-top: 20px; font-size: 1.1rem; color: var(--gold);">🎮 بازی</p>
     </div>
     
     <!-- Main Screen -->
@@ -1314,6 +1334,29 @@
                 <div class="header-title">📚 باز هم گُل</div>
                 <div class="header-actions">
                     <button class="header-btn" onclick="showSettings()">⚙️</button>
+                </div>
+            </div>
+            
+            <!-- Games Quick Access - بالای صفحه -->
+            <div class="card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3)); border: 2px solid var(--gold);">
+                <div class="card-title" style="color: var(--gold);">🎮 بازی‌های سریع</div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                    <div class="game-card" onclick="startWheelGame()" style="padding: 15px; background: rgba(255,255,255,0.1);">
+                        <div style="font-size: 2rem;">🎡</div>
+                        <div style="font-size: 0.85rem;">چرخ شانس</div>
+                    </div>
+                    <div class="game-card" onclick="startBalloonGame()" style="padding: 15px; background: rgba(255,255,255,0.1);">
+                        <div style="font-size: 2rem;">🎈</div>
+                        <div style="font-size: 0.85rem;">بادکنک</div>
+                    </div>
+                    <div class="game-card" onclick="startWordSearch()" style="padding: 15px; background: rgba(255,255,255,0.1);">
+                        <div style="font-size: 2rem;">🔍</div>
+                        <div style="font-size: 0.85rem;">کلمات</div>
+                    </div>
+                    <div class="game-card" onclick="startTrueFalseGame()" style="padding: 15px; background: rgba(255,255,255,0.1);">
+                        <div style="font-size: 2rem;">✓✗</div>
+                        <div style="font-size: 0.85rem;">آزمون</div>
+                    </div>
                 </div>
             </div>
             

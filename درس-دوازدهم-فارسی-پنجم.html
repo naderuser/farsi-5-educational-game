@@ -1299,44 +1299,10 @@
             <span>👨‍💻</span>
             <span>تهیه‌کننده: رحیم ارشادی</span>
         </div>
-        <button class="btn btn-primary bounce" onclick="showRegistration()">
+        <button class="btn btn-primary bounce" onclick="showMainScreen()">
             <span>🎮</span>
             <span>شروع بازی</span>
         </button>
-    </div>
-    
-    <!-- Registration Screen -->
-    <div class="screen" id="registrationScreen">
-        <div class="container">
-            <div class="card">
-                <div class="card-title">
-                    <span>📝</span>
-                    <span>اطلاعات دانش‌آموز</span>
-                </div>
-                <form id="registrationForm">
-                    <div class="form-group">
-                        <label class="form-label">نام و نام‌خانوادگی</label>
-                        <input type="text" class="form-input" id="studentName" required placeholder="نام خود را وارد کنید">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">نام مدرسه</label>
-                        <input type="text" class="form-input" id="schoolName" required placeholder="نام مدرسه">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">کلاس</label>
-                        <input type="text" class="form-input" id="grade" required placeholder="پنجم">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">نام آموزگار</label>
-                        <input type="text" class="form-input" id="teacherName" required placeholder="نام آموزگار">
-                    </div>
-                    <button type="submit" class="btn btn-success" style="width: 100%;">
-                        <span>🚀</span>
-                        <span>شروع یادگیری</span>
-                    </button>
-                </form>
-            </div>
-        </div>
     </div>
     
     <!-- Main Screen -->
@@ -2022,14 +1988,6 @@
             </div>
             
             <div class="card">
-                <div class="card-title">👤 اطلاعات دانش‌آموز</div>
-                <p style="margin-bottom: 10px;"><strong>نام:</strong> <span id="dashName"></span></p>
-                <p style="margin-bottom: 10px;"><strong>مدرسه:</strong> <span id="dashSchool"></span></p>
-                <p style="margin-bottom: 10px;"><strong>کلاس:</strong> <span id="dashGrade"></span></p>
-                <p><strong>آموزگار:</strong> <span id="dashTeacher"></span></p>
-            </div>
-            
-            <div class="card">
                 <div class="card-title">📈 آمار عملکرد</div>
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -2102,7 +2060,7 @@
             <div class="certificate" id="certificateContent">
                 <h1 class="certificate-title">گواهینامه پایان دوره</h1>
                 <p style="font-size: 1.2rem; margin-bottom: 10px;">این گواهینامه به</p>
-                <div class="certificate-name" id="certName"></div>
+                <div class="certificate-name" id="certName">دانش‌آموز برتر</div>
                 <p style="font-size: 1.1rem; margin: 20px 0;">تقدیم می‌گردد.</p>
                 <div class="certificate-text">
                     <p>برای اتمام موفقیت‌آمیز درس دوازدهم</p>
@@ -2128,8 +2086,6 @@
                     </div>
                 </div>
                 <p style="font-size: 0.9rem; color: #92400e; margin-top: 20px;">
-                    آموزگار: <span id="certTeacher"></span><br>
-                    مدرسه: <span id="certSchool"></span><br>
                     تاریخ: <span id="certDate"></span><br><br>
                     تهیه‌کننده: رحیم ارشادی
                 </p>
@@ -2200,10 +2156,7 @@
             loadState();
             createStars();
             setupEventListeners();
-            
-            if (gameState.studentName) {
-                showMainScreen();
-            }
+            showScreen('splashScreen');
         }
         
         // Create stars background
@@ -2289,14 +2242,6 @@
         // ==================== REGISTRATION ====================
         function handleRegistration(e) {
             e.preventDefault();
-            playSound('success');
-            
-            gameState.studentName = document.getElementById('studentName').value;
-            gameState.schoolName = document.getElementById('schoolName').value;
-            gameState.grade = document.getElementById('grade').value;
-            gameState.teacherName = document.getElementById('teacherName').value;
-            
-            saveState();
             showMainScreen();
             showToast('به بازی خوش آمدید! 🎉', 'success');
             createConfetti();
@@ -2306,11 +2251,6 @@
         function showDashboard() {
             playSound('click');
             showScreen('dashboardScreen');
-            
-            document.getElementById('dashName').textContent = gameState.studentName || 'نامشخص';
-            document.getElementById('dashSchool').textContent = gameState.schoolName || 'نامشخص';
-            document.getElementById('dashGrade').textContent = gameState.grade || 'نامشخص';
-            document.getElementById('dashTeacher').textContent = gameState.teacherName || 'نامشخص';
             
             document.getElementById('dashStars').textContent = gameState.stars;
             document.getElementById('dashMedals').textContent = gameState.medals;
@@ -3556,13 +3496,10 @@
             playSound('click');
             showScreen('certificateScreen');
             
-            document.getElementById('certName').textContent = gameState.studentName || 'دانش‌آموز';
             document.getElementById('certScore').textContent = gameState.score;
             document.getElementById('certStars').textContent = gameState.stars;
             document.getElementById('certMedals').textContent = gameState.medals;
             document.getElementById('certPercent').textContent = calculateProgress() + '%';
-            document.getElementById('certTeacher').textContent = gameState.teacherName || '';
-            document.getElementById('certSchool').textContent = gameState.schoolName || '';
             
             const today = new Date();
             const dateStr = today.toLocaleDateString('fa-IR');

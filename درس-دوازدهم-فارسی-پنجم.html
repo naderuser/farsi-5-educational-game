@@ -2101,8 +2101,9 @@
         ];
         
         function startLesson() {
-            playSound('success');
-            showScreen('mainScreen');
+            // Hide splash, show main
+            document.getElementById('splashScreen').classList.remove('active');
+            document.getElementById('mainScreen').classList.add('active');
             updateMainScreen();
             createConfetti();
         }

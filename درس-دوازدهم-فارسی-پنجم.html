@@ -1300,9 +1300,9 @@
             <span>👨‍💻</span>
             <span>تهیه‌کننده: رحیم ارشادی</span>
         </div>
-        <button class="btn btn-primary bounce" onclick="showMainScreen()">
-            <span>🎮</span>
-            <span>شروع بازی</span>
+        <button class="btn btn-primary bounce" onclick="startLesson()">
+            <span>🚀</span>
+            <span>شروع یادگیری</span>
         </button>
     </div>
     
@@ -1313,109 +1313,32 @@
                 <div class="header-title">📚 نرمِ ماه و ستاره</div>
                 <div class="header-actions">
                     <button class="header-btn" onclick="showSettings()">⚙️</button>
-                    <button class="header-btn" onclick="showDashboard()">📊</button>
                 </div>
             </div>
             
             <!-- Progress -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <span>پیشرفت کلی</span>
-                    <span id="progressPercent">0%</span>
+                    <span>مرحله فعلی</span>
+                    <span id="currentStageName"></span>
                 </div>
                 <div class="progress-container">
                     <div class="progress-bar" id="totalProgress" style="width: 0%"></div>
                 </div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">⭐</div>
-                        <div class="stat-value" id="totalStars">0</div>
-                        <div class="stat-label">ستاره</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🏅</div>
-                        <div class="stat-value" id="totalMedals">0</div>
-                        <div class="stat-label">مدال</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">💯</div>
-                        <div class="stat-value" id="totalScore">0</div>
-                        <div class="stat-label">امتیاز</div>
-                    </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <span id="progressPercent">0/8</span>
+                    <span>امتیاز: <span id="totalScore">0</span></span>
                 </div>
             </div>
             
-            <!-- Game Sections -->
-            <div class="game-grid">
-                <div class="game-card" onclick="showSection('reading')">
-                    <div class="game-icon">📖</div>
-                    <div class="game-title">روان‌خوانی</div>
-                    <div class="game-desc">خواندن متن درس با صدای بلند</div>
-                </div>
-                <div class="game-card" onclick="showSection('vocabulary')">
-                    <div class="game-icon">📝</div>
-                    <div class="game-title">واژگان</div>
-                    <div class="game-desc">یادگیری واژه‌های درس</div>
-                </div>
-                <div class="game-card" onclick="showSection('meaning')">
-                    <div class="game-icon">💡</div>
-                    <div class="game-title">معنی واژه‌ها</div>
-                    <div class="game-desc">معنی و مفهوم کلمات</div>
-                </div>
-                <div class="game-card" onclick="showSection('comprehension')">
-                    <div class="game-icon">🤔</div>
-                    <div class="game-title">درک مطلب</div>
-                    <div class="game-desc">سوالات درک مطلب درس</div>
-                </div>
-                <div class="game-card" onclick="showSection('grammar')">
-                    <div class="game-icon">📐</div>
-                    <div class="game-title">دانش زبانی</div>
-                    <div class="game-desc">نکات دستوری درس</div>
-                </div>
-                <div class="game-card" onclick="showSection('spelling')">
-                    <div class="game-icon">✏️</div>
-                    <div class="game-title">املا</div>
-                    <div class="game-desc">تمرین نوشتاری</div>
-                </div>
-                <div class="game-card" onclick="showSection('writing')">
-                    <div class="game-icon">📄</div>
-                    <div class="game-title">نگارش</div>
-                    <div class="game-desc">تمرین نوشتن</div>
-                </div>
-                <div class="game-card" onclick="showSection('games')">
-                    <div class="game-icon">🎮</div>
-                    <div class="game-title">بازی‌ها</div>
-                    <div class="game-desc">بازی‌های آموزشی</div>
-                </div>
+            <!-- Stage Progress -->
+            <div class="card">
+                <div class="card-title">🎯 مراحل یادگیری</div>
+                <div id="stagesList"></div>
             </div>
             
-            <!-- Certificate Button -->
-            <div style="text-align: center; margin-top: 30px;">
-                <button class="btn btn-warning" onclick="showCertificate()">
-                    <span>🏆</span>
-                    <span>دریافت گواهینامه</span>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Navigation -->
-        <div class="nav-bar">
-            <div class="nav-item active" onclick="showSection('main')">
-                <span class="nav-icon">🏠</span>
-                <span>خانه</span>
-            </div>
-            <div class="nav-item" onclick="showSection('games')">
-                <span class="nav-icon">🎮</span>
-                <span>بازی‌ها</span>
-            </div>
-            <div class="nav-item" onclick="showDashboard()">
-                <span class="nav-icon">📊</span>
-                <span>داشبورد</span>
-            </div>
-            <div class="nav-item" onclick="showSettings()">
-                <span class="nav-icon">⚙️</span>
-                <span>تنظیمات</span>
-            </div>
+            <!-- Current Stage Content -->
+            <div id="currentStageContent"></div>
         </div>
     </div>
     
@@ -2108,24 +2031,380 @@
     <script>
         // ==================== INITIALIZATION ====================
         let gameState = {
-            studentName: '',
-            schoolName: '',
-            grade: '',
-            teacherName: '',
+            currentStage: 0,
             score: 0,
             stars: 0,
             medals: 0,
             correctAnswers: 0,
             wrongAnswers: 0,
-            currentSection: 'main',
-            completedSections: [],
-            timeSpent: 0,
+            completedStages: [],
             settings: {
                 sound: true,
                 music: false,
                 dark: true
             }
         };
+        
+        const stages = [
+            { id: 'reading', name: '📖 روان‌خوانی', icon: '📖' },
+            { id: 'vocabulary', name: '📝 واژگان', icon: '📝' },
+            { id: 'meaning', name: '💡 معنی واژه‌ها', icon: '💡' },
+            { id: 'comprehension', name: '🤔 درک مطلب', icon: '🤔' },
+            { id: 'grammar', name: '📐 دانش زبانی', icon: '📐' },
+            { id: 'spelling', name: '✏️ املا', icon: '✏️' },
+            { id: 'writing', name: '📄 نگارش', icon: '📄' },
+            { id: 'games', name: '🎮 بازی‌ها', icon: '🎮' }
+        ];
+        
+        function startLesson() {
+            playSound('success');
+            showScreen('mainScreen');
+            updateMainScreen();
+            createConfetti();
+        }
+        
+        function updateMainScreen() {
+            document.getElementById('totalScore').textContent = gameState.score;
+            
+            const progress = (gameState.completedStages.length / stages.length) * 100;
+            document.getElementById('totalProgress').style.width = progress + '%';
+            document.getElementById('progressPercent').textContent = `${gameState.completedStages.length}/${stages.length}`;
+            
+            let stagesHtml = '';
+            stages.forEach((stage, i) => {
+                const isCompleted = gameState.completedStages.includes(i);
+                const isCurrent = i === gameState.currentStage;
+                const isLocked = i > gameState.currentStage && !isCompleted;
+                
+                let statusIcon = isCompleted ? '✅' : (isLocked ? '🔒' : '⬜');
+                let statusStyle = isCompleted ? 'color: var(--success);' : (isCurrent ? 'color: var(--gold);' : 'color: rgba(255,255,255,0.4);');
+                
+                stagesHtml += `
+                    <div style="display: flex; align-items: center; padding: 12px; margin: 8px 0; 
+                        background: ${isCurrent ? 'rgba(99, 102, 241, 0.2)' : 'rgba(255,255,255,0.05)'}; 
+                        border-radius: 12px; border-right: 4px solid ${isCompleted ? 'var(--success)' : (isCurrent ? 'var(--gold)' : 'transparent')};">
+                        <span style="font-size: 1.5rem; margin-left: 15px;">${statusIcon}</span>
+                        <span style="${statusStyle}; font-weight: ${isCurrent ? '700' : '400'};">${stage.name}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('stagesList').innerHTML = stagesHtml;
+            
+            document.getElementById('currentStageName').textContent = stages[gameState.currentStage].name;
+            
+            loadCurrentStageContent();
+        }
+        
+        function loadCurrentStageContent() {
+            const stage = stages[gameState.currentStage];
+            let html = `<div class="card"><div class="card-title">${stage.icon} ${stage.name}</div>`;
+            
+            switch(stage.id) {
+                case 'reading':
+                    html += `
+                        <div class="reading-text">
+                            صدای آب را شنیده‌ای؟ آرام و نرم مثل آواز چشمه، از لابه‌لای سنگ‌ها می‌آید. آب از بلندی می‌آید پایین. صدای آب مثل صدای نُت‌های موسیقی است. هر قطرهٔ آب که می‌افتد، نُتی می‌نوازد.
+                            <br><br>
+                            روزی بود. آوا با پدرش به کنار رودخانه رفته بود. آوا موش کاغذی به دست داشت. موش کاغذی را به کاغذ دُم کرد. نخِ موش کاغذی را به کف دستش گره زد. آوا یک موش کاغذی ساخته بود. موش کاغذی آوا مثل ماهی کوچکی بود که بال‌هایی از جنس کاغذ داشت. پرنده‌ها فکر می‌کردند، ماهی کاغذی آوا، یک پرندهٔ کوچک است. آوا موش کاغذی را به هوا پرتاب کرد. موش کاغذی آوا مثل پرنده بال بال زد. آوا گفت: «من یک پرندهٔ کوچک دارم!»
+                            <br><br>
+                            ناگهان باد شدیدی وزید. نخ از دست آوا رها شد. موش کاغذی به آسمان رفت. آوا با چشمانش موش کاغذی را دنبال کرد. موش کاغذی بالا رفت و بالا رفت تا مثل یک نقطهٔ کوچک شد. آن‌وقت آوا گفت: «برو، پرندهٔ کوچک من! باز هم می‌آیم پیشت!»
+                            <br><br>
+                            شب شد. ماه از پشت ابرها بیرون آمد. آسمان پُر از ستاره شد. آوا به آسمان نگاه کرد. چشمان آوا مثل ستاره‌ها شُعَندِ شد. آوا گفت: «دُمِ ستاره‌ها مثل دُمِ موش کاغذی است!»
+                            <br><br>
+                            از این به بعد، هر شب آوا به آسمان نگاه می‌کرد. آوا می‌دانست که پرندهٔ کوچکش، حالا یک ستاره شده است. آوا هر شب با ستاره‌ها حرف می‌زد و ستاره‌ها هم با آوا حرف می‌زدند. حالا آسمان پُر از ستاره‌هایی بود که با آوا دوست شده بودند.
+                        </div>
+                        <p style="margin: 15px 0; font-size: 1.1rem;"><strong>🎯 پیام درس:</strong> با تخیل و ذوق می‌توان زیبایی‌های طبیعت را دید و با دنیای اطراف ارتباط برقرار کرد.</p>
+                        <button class="btn btn-success" onclick="completeCurrentStage()">
+                            <span>✅</span>
+                            <span>تکمیل و رفتن به مرحله بعد</span>
+                        </button>
+                    `;
+                    break;
+                case 'vocabulary':
+                    html += `
+                        <table class="vocab-table">
+                            <thead><tr><th>واژه</th><th>معنی</th></tr></thead>
+                            <tbody>
+                                <tr><td>آرام</td><td>بدون شتاب، آهسته</td></tr>
+                                <tr><td>نرم</td><td>ملایم</td></tr>
+                                <tr><td>لابه‌لای</td><td>در میان، بین</td></tr>
+                                <tr><td>بلندی</td><td>ارتفاع، بالا</td></tr>
+                                <tr><td>نُت</td><td>آهنگ موسیقی</td></tr>
+                                <tr><td>موش کاغذی</td><td>بادبادک کوچک</td></tr>
+                                <tr><td>پرتاب</td><td>به هوا انداختن</td></tr>
+                                <tr><td>شعندِ</td><td>درخشان، نورانی</td></tr>
+                                <tr><td>الهام‌بخش</td><td>ایجادکنندهٔ ایده و فکر</td></tr>
+                                <tr><td>ارتباط</td><td>پیوند، رابطه</td></tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-success" onclick="completeCurrentStage()">
+                            <span>✅</span>
+                            <span>تکمیل و رفتن به مرحله بعد</span>
+                        </button>
+                    `;
+                    break;
+                case 'meaning':
+                    html += `
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">معنی کلمات مهم درس را یاد بگیرید:</p>
+                        <div style="display: grid; gap: 10px;">
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                                <strong>آرام:</strong> آهسته، بدون شتاب، آسوده
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                                <strong>نرم:</strong> ملایم، نرم و ملایم
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                                <strong>لابه‌لای:</strong> در میان، بین، میان
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                                <strong>شعندِ:</strong> درخشان، نورانی
+                            </div>
+                        </div>
+                        <button class="btn btn-success" onclick="completeCurrentStage()" style="margin-top: 20px;">
+                            <span>✅</span>
+                            <span>تکمیل و رفتن به مرحله بعد</span>
+                        </button>
+                    `;
+                    break;
+                case 'comprehension':
+                    html += startComprehensionQuiz();
+                    break;
+                case 'grammar':
+                    html += `
+                        <div class="card-title">🔗 همایند (Collocation)</div>
+                        <p style="margin-bottom: 15px;">کلماتی که معمولاً در کنار هم به کار می‌روند:</p>
+                        <table class="vocab-table">
+                            <thead><tr><th>همایند</th><th>معنی</th></tr></thead>
+                            <tbody>
+                                <tr><td>صدای آب</td><td>آب صدا دارد</td></tr>
+                                <tr><td>آواز خوش</td><td>آواز زیبا</td></tr>
+                                <tr><td>نور ماه</td><td>نور سفید ماه</td></tr>
+                                <tr><td>ستاره‌های درخشان</td><td>ستاره‌های نورانی</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="card-title" style="margin-top: 20px;">👥 جمع بستن</div>
+                        <p style="margin-bottom: 15px;">با اضافه کردن «ها» جمع بسازید:</p>
+                        <table class="vocab-table">
+                            <thead><tr><th>مفرد</th><th>جمع</th></tr></thead>
+                            <tbody>
+                                <tr><td>ستاره</td><td>ستاره‌ها</td></tr>
+                                <tr><td>پرنده</td><td>پرنده‌ها</td></tr>
+                                <tr><td>قطره</td><td>قطره‌ها</td></tr>
+                                <tr><td>سنگ</td><td>سنگ‌ها</td></tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-success" onclick="completeCurrentStage()" style="margin-top: 20px;">
+                            <span>✅</span>
+                            <span>تکمیل و رفتن به مرحله بعد</span>
+                        </button>
+                    `;
+                    break;
+                case 'spelling':
+                    html += startSpellingExercise();
+                    break;
+                case 'writing':
+                    html += `
+                        <div class="card-title">✍️ فعالیت‌های نوشتاری</div>
+                        <p style="margin-bottom: 20px;">با کلمات زیر جمله بسازید:</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                            <span class="badge">آرام</span>
+                            <span class="badge">نرم</span>
+                            <span class="badge">ستاره</span>
+                            <span class="badge">پرنده</span>
+                        </div>
+                        <p style="margin-bottom: 15px;">یک بند درباره تخیل و زیبایی‌های طبیعت بنویسید:</p>
+                        <textarea class="form-input" rows="4" placeholder="پاسخ خود را اینجا بنویسید..."></textarea>
+                        <p style="margin-top: 20px;"><strong>مثال:</strong> آوا با تخیل خود توانست موش کاغذی را به ستاره تبدیل کند. او فهمید که حتی یک کاغذ ساده هم می‌تواند زیبا باشد.</p>
+                        <button class="btn btn-success" onclick="completeCurrentStage()" style="margin-top: 20px;">
+                            <span>✅</span>
+                            <span>تکمیل و رفتن به مرحله بعد</span>
+                        </button>
+                    `;
+                    break;
+                case 'games':
+                    html += `
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">🎮 حالا نوبت بازی است! یکی از بازی‌ها را انتخاب کنید:</p>
+                        <div class="game-grid">
+                            <div class="game-card" onclick="startWheelGame()">
+                                <div class="game-icon">🎡</div>
+                                <div class="game-title">چرخ شانس</div>
+                                <div class="game-desc">بخت خود را امتحان کنید</div>
+                            </div>
+                            <div class="game-card" onclick="startBalloonGame()">
+                                <div class="game-icon">🎈</div>
+                                <div class="game-title">بادکنک امتیازی</div>
+                                <div class="game-desc">روی بادکنک‌های درست کلیک کنید</div>
+                            </div>
+                            <div class="game-card" onclick="startWordSearch()">
+                                <div class="game-icon">🔍</div>
+                                <div class="game-title">کلمات پنهان</div>
+                                <div class="game-desc">کلمات را در جدول پیدا کنید</div>
+                            </div>
+                            <div class="game-card" onclick="startTrueFalseGame()">
+                                <div class="game-icon">✓✗</div>
+                                <div class="game-title">درست یا نادرست</div>
+                                <div class="game-desc">صحیح یا غلط بودن را مشخص کنید</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-warning" onclick="completeCurrentStage(); showCertificate();" style="margin-top: 20px;">
+                            <span>🏆</span>
+                            <span>پایان و دریافت گواهینامه</span>
+                        </button>
+                    `;
+                    break;
+            }
+            
+            html += '</div>';
+            document.getElementById('currentStageContent').innerHTML = html;
+        }
+        
+        function completeCurrentStage() {
+            if (!gameState.completedStages.includes(gameState.currentStage)) {
+                gameState.completedStages.push(gameState.currentStage);
+                gameState.correctAnswers += 1;
+                addScore(10);
+            }
+            
+            playSound('success');
+            createConfetti();
+            
+            if (gameState.currentStage < stages.length - 1) {
+                gameState.currentStage++;
+                saveState();
+                showToast(`مرحله ${gameState.currentStage + 1} شروع شد! 🎉`, 'success');
+                updateMainScreen();
+            } else {
+                showCertificate();
+            }
+        }
+        
+        function startComprehensionQuiz() {
+            const questions = [
+                { q: 'صدای آب چگونه توصیف شده است؟', options: ['مثل صدای طوفان', 'آرام و نرم مثل آواز چشمه', 'مثل صدای ماشین', 'مثل صدای باران'], correct: 1 },
+                { q: 'آوا با پدرش به کجا رفته بود؟', options: ['به پارک', 'به کنار رودخانه', 'به مدرسه', 'به بازار'], correct: 1 },
+                { q: 'موش کاغذی آوا چگونه بود؟', options: ['مثل ماهی با بال‌های کاغذی', 'مثل پرنده بزرگ', 'مثل کتاب', 'مثل خانه'], correct: 0 },
+                { q: 'باد چه کار کرد؟', options: ['موش کاغذی را گرفت', 'نخ از دست آوا رها شد', 'آوا را برد', 'آب را خشک کرد'], correct: 1 },
+                { q: 'آوا موش کاغذی را به چه تشبیه کرد؟', options: ['به ابر', 'به ماه', 'به ستاره', 'به ماهی'], correct: 2 }
+            ];
+            
+            let html = `
+                <p style="margin-bottom: 20px;">🤔 به سوالات درک مطلب پاسخ دهید:</p>
+                <div id="comprehensionQuestions"></div>
+            `;
+            
+            window.quizQuestions = questions;
+            window.quizIndex = 0;
+            window.quizScore = 0;
+            
+            html += '<div id="quizArea"></div>';
+            
+            setTimeout(() => showQuizQ(), 100);
+            
+            return html;
+        }
+        
+        function showQuizQ() {
+            const q = window.quizQuestions[window.quizIndex];
+            let html = `
+                <div class="question-number">سوال ${window.quizIndex + 1} از ${window.quizQuestions.length}</div>
+                <div class="question-text">${q.q}</div>
+                <div class="options-container">
+            `;
+            
+            q.options.forEach((opt, i) => {
+                html += `<button class="option-btn" onclick="answerQuiz(${i})">${opt}</button>`;
+            });
+            
+            html += '</div>';
+            document.getElementById('quizArea').innerHTML = html;
+        }
+        
+        function answerQuiz(index) {
+            const q = window.quizQuestions[window.quizIndex];
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            buttons.forEach((btn, i) => {
+                btn.onclick = null;
+                if (i === q.correct) btn.classList.add('correct');
+                if (i === index && i !== q.correct) btn.classList.add('wrong');
+            });
+            
+            if (index === q.correct) {
+                window.quizScore++;
+                addScore(10);
+                addCorrect();
+                playSound('success');
+            } else {
+                addWrong();
+                playSound('error');
+            }
+            
+            window.quizIndex++;
+            
+            setTimeout(() => {
+                if (window.quizIndex >= window.quizQuestions.length) {
+                    showToast(`آزمون تمام شد! امتیاز: ${window.quizScore}`, 'success');
+                    document.getElementById('quizArea').innerHTML = `
+                        <div style="text-align: center; padding: 30px;">
+                            <div style="font-size: 3rem;">🎉</div>
+                            <p style="font-size: 1.3rem; margin: 15px 0;">آفرین! ${window.quizScore} از ${window.quizQuestions.length}</p>
+                        </div>
+                    `;
+                    setTimeout(completeCurrentStage, 1500);
+                } else {
+                    showQuizQ();
+                }
+            }, 1000);
+        }
+        
+        function startSpellingExercise() {
+            const sentences = [
+                { blank: 'آرام', sentence: 'آوا به _______ راه رفت.' },
+                { blank: 'بلندی', sentence: 'آب از _______ می‌آید پایین.' },
+                { blank: 'ستاره', sentence: 'آسمان پُر از _______ شد.' },
+                { blank: 'پرنده', sentence: 'موش کاغذی مثل یک _______ بال بال می‌زد.' },
+                { blank: 'نرم', sentence: 'صدای آب _______ بود.' }
+            ];
+            
+            let html = '<p style="margin-bottom: 20px;">✏️ جمله‌ها را با کلمات درست کامل کنید:</p>';
+            sentences.forEach((item, i) => {
+                html += `
+                    <div style="margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                        <p style="margin-bottom: 10px;">${item.sentence.replace('_______', '<input type="text" class="form-input blank-input" id="spell_${i}" data-answer="${item.blank}" style="width: 120px;">')}</p>
+                    </div>
+                `;
+            });
+            
+            html += `<button class="btn btn-success" onclick="checkSpelling()" style="margin-top: 10px;">
+                <span>✓</span> بررسی و تکمیل
+            </button>`;
+            
+            return html;
+        }
+        
+        function checkSpelling() {
+            let correct = 0;
+            const inputs = document.querySelectorAll('[id^="spell_"]');
+            
+            inputs.forEach(input => {
+                const answer = input.dataset.answer;
+                const userAnswer = input.value.trim();
+                
+                if (userAnswer === answer) {
+                    correct++;
+                    input.style.borderColor = 'var(--success)';
+                    input.style.background = 'rgba(16, 185, 129, 0.2)';
+                } else {
+                    input.style.borderColor = 'var(--danger)';
+                    input.style.background = 'rgba(239, 68, 68, 0.2)';
+                }
+            });
+            
+            addScore(correct * 5);
+            showToast(`${correct} از ${inputs.length} درست!`, correct >= 3 ? 'success' : '');
+            
+            setTimeout(completeCurrentStage, 1500);
+        }
         
         let currentQuiz = {
             questions: [],
@@ -2139,17 +2418,17 @@
             timeChallenge: null
         };
         
-        // Load saved state
-        function loadState() {
-            const saved = localStorage.getItem('farsiGameState');
-            if (saved) {
-                gameState = { ...gameState, ...JSON.parse(saved) };
-            }
-        }
-        
         // Save state
         function saveState() {
             localStorage.setItem('farsiGameState', JSON.stringify(gameState));
+        }
+        
+        function loadState() {
+            const saved = localStorage.getItem('farsiGameState');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                gameState = { ...gameState, ...parsed };
+            }
         }
         
         // Initialize
@@ -3478,7 +3757,7 @@
             }
             
             saveState();
-            updateDashboard();
+            updateMainScreen();
         }
         
         function addCorrect() {
